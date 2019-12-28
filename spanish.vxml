@@ -82,34 +82,3 @@ S: El tiempo en Loja es soleado a las 12 AM L :^) -->
 	</form>-->
 
 </vxml>
-
-
-
-
-<grammar mode="voice" xml:lang="en-US" version="1.0" root="command">
-  <!-- Command is an action on an object -->
-  <!-- e.g. "open a window" -->
-  <rule id="command" scope="public">
-    <ruleref uri="#action"/> <ruleref uri="#object"/>
-  </rule>
-
-  <rule id="action">
-    <one-of>
-      <item> open </item>
-      <item> close </item>
-      <item> delete </item>
-      <item> move </item>
-    </one-of>
-  </rule>
-
-  <rule id="object">
-   <item repeat="0-1">
-      <one-of> <item> the </item> <item> a </item> </one-of>
-    </item>
-    <one-of>
-      <item> window </item>
-      <item> file </item>
-      <item> menu </item>
-    </one-of>
-  </rule>
-</grammar>
