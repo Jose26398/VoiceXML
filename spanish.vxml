@@ -1,3 +1,4 @@
+<!-- 
 <vxml version="2.1" xml:lang="es-ES">
 	<form><block>
 		<prompt>
@@ -6,3 +7,109 @@
 		</prompt>
 	</block></form>
 </vxml>
+
+S: Bienvenido a este servicio de informacion meteorologica.
+En que provincia?
+U: aiuda :S
+S: Di el nombre de la provincia, por ejemplo, Granada
+U: Granadaa :p
+S: En que ciudad?
+U: Madrid :o
+S: No he comprendido. En que ciudad?
+U: Loja >:(
+S: El tiempo en Loja es soleado a las 12 AM L :^) -->
+
+
+<vxml version="2.1" xml:lang="es-ES">
+	<link event="help">
+		<grammar src="ayuda.jsgf"/>
+	</link>
+
+	<form id="informacion_entradas">
+
+		<block>Bienvenido al servicio de informacion de entradas de la Alhambra</block>
+
+		<field name="edificio">
+			<grammar src="edificio.jsgf"/>
+			<prompt>Para que edificio de la Alhambra desea obtener informacion sobre las entradas?</prompt>
+			<help>
+				<prompt> ayayyayayayya</prompt>
+				<throw event="help_edificios"/>
+			</help>
+		</field>
+		
+		<field name="horario">
+			<prompt count="1">A que horario desea ir?</prompt>
+			<prompt count="2" timeout="10s">
+				Por favor, elija un horario para visitarlo.
+				Las horas disponibles son: maniana, tarde o noche.
+			</prompt>
+			<help>
+				<throw event="help_horarios"/>
+				<reprompt/>
+			</help>
+			 <catch event="help">
+			Di el nombre de la provincia, por ejemplo, Granada
+			</catch>
+			<noinput>
+				<throw event="noinput"/>
+				<reprompt/>
+			</noinput>
+		</field>
+		<filled>
+			<prompt> Usted ha dicho <value expr="edificio"/></prompt>
+		</filled>
+	</form>
+
+
+
+	<!--<form id="ir_a_tienda_de_souvenirs">
+		<block>Bienvenido al servicio de compra de </block>
+		<field name="provincia">
+			<prompt count="1">Para que día las quieres?</prompt>
+			<prompt count="2"></prompt>
+			<help>
+				<throw event="help"/>
+			</help>
+			<catch event="help">
+			Di el nombre de la provincia, por ejemplo, Granada
+			</catch>
+			<noinput>
+				<throw event="noinput"/>
+				<reprompt/>
+			</noinput>
+		</field> 
+	</form>-->
+
+</vxml>
+
+
+
+
+<grammar mode="voice" xml:lang="en-US" version="1.0" root="command">
+  <!-- Command is an action on an object -->
+  <!-- e.g. "open a window" -->
+  <rule id="command" scope="public">
+    <ruleref uri="#action"/> <ruleref uri="#object"/>
+  </rule>
+
+  <rule id="action">
+    <one-of>
+      <item> open </item>
+      <item> close </item>
+      <item> delete </item>
+      <item> move </item>
+    </one-of>
+  </rule>
+
+  <rule id="object">
+   <item repeat="0-1">
+      <one-of> <item> the </item> <item> a </item> </one-of>
+    </item>
+    <one-of>
+      <item> window </item>
+      <item> file </item>
+      <item> menu </item>
+    </one-of>
+  </rule>
+</grammar>

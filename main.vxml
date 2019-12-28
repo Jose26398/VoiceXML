@@ -1,14 +1,19 @@
-<vxml version="2.1" xml:lang="es-ES">
+<vxml version="2.1" xml:lang="es-ES" application="http://webhosting.voxeo.net/206403/www/pruebas/root.vxml">
   <menu>
-    <prompt>Bienvenido a la Alhambra. Elige lenguaje </prompt>
+    <prompt>Buenasa la Alhambra. Elige lenguaje </prompt>
     <prompt xml:lang="en-US">Welcome to Alhambra. Choose a language </prompt>
-    <enumerate/>
-      <choice dtmf="1" next="http://webhosting.voxeo.net/206462/www/xd/start.vxml">
+    
+    <prompt>Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
+    <prompt xml:lang="en-US" timeout="20s">To chose english, press 2</prompt>
+      <choice dtmf="1" next="http://webhosting.voxeo.net/206403/www/pruebas/sp.vxml">
         Español
       </choice>
-      <choice dtmf="2" next="http://webhosting.voxeo.net/206462/www/xd/intro.vxml">
-        Ingles
+      
+      <choice dtmf="2" next="http://webhosting.voxeo.net/206462/www/xd/intro.vxml"/>
+      
+      <choice dtmf="3" event="ayuda">
+        Ayuda
       </choice>
-  <enumerate/>
+
   </menu>
 </vxml>

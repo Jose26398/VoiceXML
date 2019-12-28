@@ -1,0 +1,9 @@
+<vxml version="2.1" xml:lang="es-ES">
+<var name="despedida" expr="'adios'"/>
+
+<catch event="ayuda">
+    <prompt>xd jaja</prompt>
+</catch>
+
+
+</vxml>
