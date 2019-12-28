@@ -1,0 +1,14 @@
+<vxml version="2.1" xml:lang="es-ES">
+  <menu>
+    <prompt>Bienvenido a la Alhambra. Elige lenguaje </prompt>
+    <prompt xml:lang="en-US">Welcome to Alhambra. Choose a language </prompt>
+    <enumerate/>
+      <choice dtmf="1" next="http://webhosting.voxeo.net/206462/www/xd/start.vxml">
+        Español
+      </choice>
+      <choice dtmf="2" next="http://webhosting.voxeo.net/206462/www/xd/intro.vxml">
+        Ingles
+      </choice>
+  <enumerate/>
+  </menu>
+</vxml>
