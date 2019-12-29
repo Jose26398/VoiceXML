@@ -1,5 +1,0 @@
-#JSGF V1.0;
-
-grammar salir;
-
-public <salir> = consultar otra entrada | sugerencias | salir | arriba españa;

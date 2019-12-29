@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar salir;
+
+public <salir> = check another ticket | suggestion | exit | no;

@@ -1,10 +1,6 @@
 <vxml version="2.1" xml:lang="es-ES">
     <var name="despedida" expr="'adios'"/>
 
-    <catch event="ayuda">
-        <prompt>xd jaja</prompt>
-    </catch>
-
     <catch event="help_edificios">
         <prompt>Los edificios disponibles para comprar entradas son: Palacio de Carlos Quinto, la Alcazaba o el Palacios Nazaries.</prompt>
         <reprompt/>
@@ -16,7 +12,7 @@
     </catch>
 
     <catch event="exit_español">
-        <prompt>Muchas gracias por haber usado nuestro servicio. Le esperamos de vuelta.</prompt>
+        <prompt>Muchas gracias por haber usado nuestro servicio. Hasta la proxima.</prompt>
         <exit/>
     </catch>
     

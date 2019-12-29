@@ -1,0 +1,5 @@
+#JSGF V1.0;
+
+grammar edificios;
+
+public <edificios> = palacio [de] carlos quinto | alcazaba | palacios nazaries;

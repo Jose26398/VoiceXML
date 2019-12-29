@@ -1,19 +1,19 @@
 <vxml version="2.1" xml:lang="es-ES" application="root.vxml">
-	<script src="greeting.js"/>
+	<script src="scripts/greeting.js"/>
 
   <menu>
-    <audio src="recuerdos.wav"/>
-		<prompt><value expr="greetEsp()"/> . Bienvenido a la Alhambra</prompt>
+    <audio src="audio/recuerdos.wav"/>
+		<prompt><value expr="greetEsp()"/> . Bienvenido a la <emphasis> Alhambra </emphasis></prompt>
 		<prompt xml:lang="en-US"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
     
     <prompt>Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
-    <prompt xml:lang="en-US" timeout="20s">To chose english, press 2 or say <emp level="strong">english</emp></prompt>
+    <prompt xml:lang="en-US" timeout="20s">To choose English, press 2 or say <emp level="strong">English</emp></prompt>
       <choice dtmf="1" next="spanish.vxml">
         Español
       </choice>
       
       <choice dtmf="2" next="english.vxml">
-	      <grammar src="chooseLangEnglish.jsgf"/>
+	      <grammar src="grammar-english/chooseLangEnglish.jsgf"/>
           Ingles
       </choice>
   </menu>

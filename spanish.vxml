@@ -1,20 +1,9 @@
-<!-- 
-<vxml version="2.1" xml:lang="es-ES">
-	<form><block>
-		<prompt>
-		<audio src="http://webhosting.voxeo.net/206462/www/xd/himno.wav"/>
-		ARRIBA ESPAÑITA hola
-		</prompt>
-	</block></form>
-</vxml> -->
-
-
 <vxml version="2.1" xml:lang="es-ES" application="root.vxml">
 	<link event="help">
-		<grammar src="ayuda.jsgf"/>
+		<grammar src="grammar-spanish/ayuda.jsgf"/>
 	</link>
 
-	<script src="calculaPrecio.js"/>
+	<script src="scripts/calculaPrecio.js"/>
 
 	<var name="edificio_global"/>
 	<var name="horario_global"/>
@@ -22,17 +11,16 @@
 	<var name="otra_discapacidad_global" expr="'no'"/>
 	<var name="precio" expr="7.5"/>
 
-
 	<form id="informacion_entradas">
 		<block>
-			Bienvenidos calvos y calvas al servicio de informacion de entradas de la Alhambra
+			Bienvenido al servicio de informacion de entradas de la Alhambra.
 			<break time="500ms"/>
 		</block>
 
 		<field name="edificio">
-			<grammar src="edificio.jsgf"/>
-			<prompt>Iyooo, para que edificio de la Alhambra desea obtener informacion sobre las entradas?</prompt>
-
+			<grammar src="grammar-spanish/edificio.jsgf"/>
+			<prompt count="1"> Para que edificio de la Alhambra desea obtener informacion sobre las entradas? </prompt>
+			<prompt count="3"> Por favor, diga ayuda para saber las opciones disponibles. </prompt>
 			<help>
 				<throw event="help_edificios"/>
 			</help>
@@ -42,12 +30,9 @@
 		</field>
 		
 		<field name="horario">
-			<grammar src="horario.jsgf"/>
-			<prompt count="1">Para que horario desea obtener informacion sobre las entradas?</prompt>
-			<prompt count="3">
-				Por favor, elija un horario para visitarlo.
-				Las horas disponibles son: mañana, tarde o noche.
-			</prompt>
+			<grammar src="grammar-spanish/horario.jsgf"/>
+			<prompt count="1"> Que horario le interesa? </prompt>
+			<prompt count="3"> Por favor, diga ayuda para saber las opciones disponibles. </prompt>
 			<help>
 				<throw event="help_horarios"/>
 			</help>
@@ -57,7 +42,7 @@
 		</field>
 
 		<field name="confirmar_ed_hor">
-			<grammar src="confirmacion.jsgf"/>
+			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt>
 				Usted ha dicho que quiere informacion sobre
 				<value expr="edificio"/> para el horario de
@@ -77,11 +62,11 @@
 		</field>
 
 		<field name="confirmar_asistencia">
-			<grammar src="confirmacion.jsgf"/>
-			<prompt>Padece algun tipo de minusvalia?</prompt>
+			<grammar src="grammar-spanish/confirmacion.jsgf"/>
+			<prompt> Padece algun tipo de <emphasis> minusvalia </emphasis>? </prompt>
 			<filled>
 				<if cond="confirmar_asistencia=='si'">
-					Vamos a darte algo de ayuda pendejo de mierda.
+					Vamos a intentar ofrecerle mejor informacion sobre los precios de las entradas.
 					<goto next="#asistencia"/>
 				<else/>
 					<goto next="#precios"/>
@@ -93,8 +78,8 @@
 
 	<form id="asistencia">
 		<field name="movilidad_reducida">
-			<grammar src="confirmacion.jsgf"/>
-			<prompt> Necesitaria algun tipo de asistencia por movilidad reducida, marcelino pan y vino?</prompt>
+			<grammar src="grammar-spanish/confirmacion.jsgf"/>
+			<prompt> Necesitaria algun tipo de asistencia debido a movilidad reducida? </prompt>
 			<filled>
 				<if cond="movilidad_reducida=='si'">
 					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
@@ -103,8 +88,8 @@
 		</field>
 
 		<field name="otra_discapacidad">
-			<grammar src="confirmacion.jsgf"/>
-			<prompt> Padece otro tipo de discapacidad, como por ejemplo subnormalidad, ceguera o sordera?</prompt>
+			<grammar src="grammar-spanish/confirmacion.jsgf"/>
+			<prompt> Padece otro tipo de discapacidad, como por ejemplo, ceguera o sordera? </prompt>
 			<filled>
 				<if cond="otra_discapacidad=='si'">
 					<assign name="otra_discapacidad_global" expr="otra_discapacidad"/>
@@ -119,54 +104,41 @@
 
 	<form id="precios">
 		<block>
-			Con toda la informacion que me ha proporcionado, la entrada le costara
+			Con toda la informacion que me ha proporcionado, la entrada le costara <emphasis level="strong">
 			<value expr="calcularPrecioFinal(precio, edificio_global, horario_global, movilidad_reducida_global, otra_discapacidad_global)"/>
-			euros, yatusabe mi amol.
-			<break time="200ms"/>
+			</emphasis>	euros.
+			<break time="400ms"/>
 		</block>
 		
-
 		<field name="opcion">
-			<grammar src="salir.jsgf"/>
-			<prompt> Desea consultar el precio de otro tipo de entrada? 
-					Desea dejar una sugerencia? Porque existimos, tambien tenemos corazon, nos importas :)</prompt>
-			
+			<grammar src="grammar-spanish/salir.jsgf"/>
+			<prompt count="1"> Desea consultar el precio de otra entrada o dejar una sugerencia? </prompt>
+			<prompt count="3"> Por favor, diga ayuda para saber las opciones disponibles. </prompt>
 			<filled>
 				<if cond="opcion=='consultar otra entrada'">
 					<clear namelist="edificio horario confirmar_ed_hor movilidad_reducida otra_discapacidad"/>
+					<assign name="movilidad_reducida_global" expr="'no'"/>
+					<assign name="otra_discapacidad_global" expr="'no'"/>
 					<goto next="#informacion_entradas"/>
-				
 				<elseif cond="opcion=='sugerencias'"/>
 					<goto next="#sugerencias"/>
-				
-				<elseif cond="opcion=='salir'"/>
+				<elseif cond="opcion=='no' || opcion=='salir'"/>
 					<throw event="exit_español"/>
-
 				</if>
-
 			</filled>
-
 			<help>
 				<throw event="help_salir"/>
 			</help>
-
 			<noinput>
 				<throw event="exit_español"/>
 			</noinput>
-
-			<!-- <choice>
-				Arriba ESPAÑA
-				<audio src="http://webhosting.voxeo.net/206462/www/xd/himno.wav"/>
-			</choice> -->
-
 		</field>
-			
 	</form>
 
 	<form id="sugerencias">
 		<record name="sugerencia" beep="true" maxtime="10s"	finalsilence="4000ms" dtmfterm="true" type="audio/x-wav">
-			<prompt>Graba tu mensaje tras escuchar el beeeeeeeeeeeeeeeeeeeeeeeeeep</prompt>
-			<noinput>No he oido nada, intentalo de nuevo</noinput>
+			<prompt> Graba tu mensaje tras escuchar el beep. </prompt>
+			<noinput> No he oido nada, intentalo de nuevo. </noinput>
 		</record>
 		<throw event="exit_español"/>
 	</form>
