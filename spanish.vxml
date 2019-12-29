@@ -26,8 +26,10 @@ S: El tiempo en Loja es soleado a las 12 AM L :^) -->
 	</link>
 
 	<form id="informacion_entradas">
-
-		<block>Bienvenido al servicio de informacion de entradas de la Alhambra</block>
+		<block>
+			Bienvenido al servicio de informacion de entradas de la Alhambra
+			<break time="500ms"/>
+		</block>	
 
 		<field name="edificio">
 			<grammar src="edificio.jsgf"/>
@@ -39,28 +41,38 @@ S: El tiempo en Loja es soleado a las 12 AM L :^) -->
 		</field>
 		
 		<field name="horario">
-			<prompt count="1">A que horario desea ir?</prompt>
+			<grammar src="horario.jsgf"/>
+			<prompt count="1">Para que horario desea obtener informacion sobre las entradas?</prompt>
 			<prompt count="2" timeout="10s">
 				Por favor, elija un horario para visitarlo.
 				Las horas disponibles son: maniana, tarde o noche.
 			</prompt>
 			<help>
 				<throw event="help_horarios"/>
-				<reprompt/>
 			</help>
-			 <catch event="help">
-			Di el nombre de la provincia, por ejemplo, Granada
-			</catch>
 			<noinput>
 				<throw event="noinput"/>
-				<reprompt/>
 			</noinput>
 		</field>
-		<filled>
-			<prompt> Usted ha dicho <value expr="edificio"/></prompt>
-		</filled>
-	</form>
 
+		<field name="confirmar_ed_hor">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt>
+				Usted ha dicho que quiere informacion sobre
+				<value expr="edificio"/> para el horario de
+				<value expr="horario"/>. <break time="150ms"/>
+				Es correcta la informacion proporcionada?
+			</prompt>
+			<filled>
+				<if cond="confirmar_ed_hor=='si'">
+					Muy bien. Continuemos.
+				<else/>
+					De acuerdo. Le preguntare de nuevo.
+					<clear namelist="edificio horario confirmar_ed_hor"/>
+				</if>
+			</filled>
+		</field>
+	</form>
 
 
 	<!--<form id="ir_a_tienda_de_souvenirs">

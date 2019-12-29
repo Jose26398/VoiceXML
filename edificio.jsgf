@@ -2,4 +2,4 @@
 
 grammar edificios;
 
-public <edificios> = palacio carlos quinto | alcazaba | palacios nazaries;
+public <edificios> = palacio [de] carlos quinto | alcazaba | palacios nazaries;
