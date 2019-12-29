@@ -1,19 +1,20 @@
-<vxml version="2.1" xml:lang="es-ES" application="http://webhosting.voxeo.net/206403/www/pruebas/root.vxml">
+<vxml version="2.1" xml:lang="es-ES" application="root.vxml">
+	<script src="greeting.js"/>
+
   <menu>
-    <prompt>Buenasa la Alhambra. Elige lenguaje </prompt>
-    <prompt xml:lang="en-US">Welcome to Alhambra. Choose a language </prompt>
+
+		<prompt><value expr="greetEsp()"/> . Bienvenido a la Alhambra</prompt>
+		<prompt xml:lang="en-US"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
     
     <prompt>Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
-    <prompt xml:lang="en-US" timeout="20s">To chose english, press 2</prompt>
-      <choice dtmf="1" next="http://webhosting.voxeo.net/206403/www/pruebas/sp.vxml">
+    <prompt xml:lang="en-US" timeout="20s">To chose english, press 2 or say <emp level="strong">english</emp></prompt>
+      <choice dtmf="1" next="spanish.vxml">
         Español
       </choice>
       
-      <choice dtmf="2" next="http://webhosting.voxeo.net/206462/www/xd/intro.vxml"/>
-      
-      <choice dtmf="3" event="ayuda">
-        Ayuda
+      <choice dtmf="2" next="english.vxml">
+	      <grammar src="chooseLangEnglish.jsgf"/>
+          Ingles
       </choice>
-
   </menu>
 </vxml>

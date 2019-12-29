@@ -6,18 +6,7 @@
 		ARRIBA ESPAÑITA hola
 		</prompt>
 	</block></form>
-</vxml>
-
-S: Bienvenido a este servicio de informacion meteorologica.
-En que provincia?
-U: aiuda :S
-S: Di el nombre de la provincia, por ejemplo, Granada
-U: Granadaa :p
-S: En que ciudad?
-U: Madrid :o
-S: No he comprendido. En que ciudad?
-U: Loja >:(
-S: El tiempo en Loja es soleado a las 12 AM L :^) -->
+</vxml> -->
 
 
 <vxml version="2.1" xml:lang="es-ES">
@@ -25,33 +14,45 @@ S: El tiempo en Loja es soleado a las 12 AM L :^) -->
 		<grammar src="ayuda.jsgf"/>
 	</link>
 
+	<script src="calculaPrecio.js"/>
+
+	<var name="edificio_global"/>
+	<var name="horario_global"/>
+	<var name="movilidad_reducida_global" expr="'no'"/>
+	<var name="otra_discapacidad_global" expr="'no'"/>
+	<var name="precio" expr="7.5"/>
+
+
 	<form id="informacion_entradas">
 		<block>
-			Bienvenido al servicio de informacion de entradas de la Alhambra
+			Bienvenidos calvos y calvas al servicio de informacion de entradas de la Alhambra
 			<break time="500ms"/>
-		</block>	
+		</block>
 
 		<field name="edificio">
 			<grammar src="edificio.jsgf"/>
 			<prompt>Para que edificio de la Alhambra desea obtener informacion sobre las entradas?</prompt>
+
 			<help>
-				<prompt> ayayyayayayya</prompt>
 				<throw event="help_edificios"/>
 			</help>
+			<noinput>
+				<throw event="help_edificios"/>
+			</noinput>
 		</field>
 		
 		<field name="horario">
 			<grammar src="horario.jsgf"/>
 			<prompt count="1">Para que horario desea obtener informacion sobre las entradas?</prompt>
-			<prompt count="2" timeout="10s">
+			<prompt count="3">
 				Por favor, elija un horario para visitarlo.
-				Las horas disponibles son: maniana, tarde o noche.
+				Las horas disponibles son: mañana, tarde o noche.
 			</prompt>
 			<help>
 				<throw event="help_horarios"/>
 			</help>
 			<noinput>
-				<throw event="noinput"/>
+				<throw event="help_horarios"/>
 			</noinput>
 		</field>
 
@@ -60,37 +61,108 @@ S: El tiempo en Loja es soleado a las 12 AM L :^) -->
 			<prompt>
 				Usted ha dicho que quiere informacion sobre
 				<value expr="edificio"/> para el horario de
-				<value expr="horario"/>. <break time="150ms"/>
+				<value expr="horario"/>.
 				Es correcta la informacion proporcionada?
 			</prompt>
 			<filled>
 				<if cond="confirmar_ed_hor=='si'">
 					Muy bien. Continuemos.
+					<assign name="edificio_global" expr="edificio"/>
+					<assign name="horario_global" expr="horario"/>
 				<else/>
 					De acuerdo. Le preguntare de nuevo.
 					<clear namelist="edificio horario confirmar_ed_hor"/>
 				</if>
 			</filled>
 		</field>
+
+		<field name="confirmar_asistencia">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt>Padece algun tipo de minusvalia?</prompt>
+			<filled>
+				<if cond="confirmar_asistencia=='si'">
+					Vamos a darte algo de ayuda pendejo de mierda.
+					<goto next="#asistencia"/>
+				<else/>
+					<goto next="#precios"/>
+				</if>
+			</filled>
+		</field>
 	</form>
 
 
-	<!--<form id="ir_a_tienda_de_souvenirs">
-		<block>Bienvenido al servicio de compra de </block>
-		<field name="provincia">
-			<prompt count="1">Para que día las quieres?</prompt>
-			<prompt count="2"></prompt>
+	<form id="asistencia">
+		<field name="movilidad_reducida">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt> Necesitaria algun tipo de asistencia por movilidad reducida?</prompt>
+			<filled>
+				<if cond="movilidad_reducida=='si'">
+					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
+				</if>
+			</filled>
+		</field>
+
+		<field name="otra_discapacidad">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt> Padece otro tipo de discapacidad, como por ejemplo subnormalidad, ceguera o sordera?</prompt>
+			<filled>
+				<if cond="otra_discapacidad=='si'">
+					<assign name="otra_discapacidad_global" expr="otra_discapacidad"/>
+					<goto next="#precios"/>
+				<else/>
+					<goto next="#precios"/>
+				</if>
+			</filled>
+		</field>
+	</form>
+
+
+	<form id="precios">
+		<block>
+			Con toda la informacion que me ha proporcionado, la entrada le costara
+			<value expr="calcularPrecioFinal(precio, edificio_global, horario_global, movilidad_reducida_global, otra_discapacidad_global)"/>
+			euros.
+			<break time="200ms"/>
+		</block>
+		
+
+		<field name="opcion">
+			<grammar src="salir.jsgf"/>
+			<prompt> Desea consultar el precio de otro tipo de entrada? </prompt>
+			
+			<filled>
+				<if cond="opcion=='consultar otra entrada'">
+					<clear namelist="edificio horario confirmar_ed_hor movilidad_reducida otra_discapacidad"/>
+					<goto next="#informacion_entradas"/>
+				
+				<elseif cond="opcion=='sugerencias'"/>
+					<record name="sugerencia" beep="true" maxtime="10s"	finalsilence="4000ms" dtmfterm="true" type="audio/wav">
+						<prompt>Graba tu mensaje tras escuchar el beeeeeeeeeeeeeeeeeeeeeeeeeep</prompt>
+						<noinput>No he oido nada, intentalo de nuevo</noinput>
+					</record>
+				
+				<elseif cond="opcion=='salir'"/>
+					<throw event="exit_español"/>
+
+				</if>
+
+			</filled>
+
 			<help>
-				<throw event="help"/>
+				<throw event="help_salir"/>
 			</help>
-			<catch event="help">
-			Di el nombre de la provincia, por ejemplo, Granada
-			</catch>
+
 			<noinput>
-				<throw event="noinput"/>
-				<reprompt/>
+				<throw event="exit_español"/>
 			</noinput>
-		</field> 
-	</form>-->
+
+			<!-- <choice>
+				Arriba ESPAÑA
+				<audio src="http://webhosting.voxeo.net/206462/www/xd/himno.wav"/>
+			</choice> -->
+
+		</field>
+			
+	</form>
 
 </vxml>
