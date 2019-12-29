@@ -2,7 +2,7 @@
 	<script src="greeting.js"/>
 
   <menu>
-
+    <audio src="recuerdos.wav"/>
 		<prompt><value expr="greetEsp()"/> . Bienvenido a la Alhambra</prompt>
 		<prompt xml:lang="en-US"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
     

@@ -1,5 +1,164 @@
-<vxml version="2.1" xml:lang="en-US">
-	<form><block>
-		<prompt> English version </prompt>
-	</block></form>
+<vxml version="2.1" xml:lang="en-US" application="root.vxml">
+	<link event="help">
+		<grammar src="ayuda.jsgf"/>
+	</link>
+
+	<script src="calculaPrecio.js"/>
+
+	<var name="edificio_global"/>
+	<var name="horario_global"/>
+	<var name="movilidad_reducida_global" expr="'no'"/>
+	<var name="otra_discapacidad_global" expr="'no'"/>
+	<var name="precio" expr="7.5"/>
+
+
+	<form id="informacion_entradas">
+		<block>
+			Welcome bald and bald to the Alhambra ticket information service.
+			<break time="500ms"/>
+		</block>
+
+		<field name="edificio">
+			<grammar src="edificio.jsgf"/>
+			<prompt>Iyooo, for which building of the Alhambra do you want to get information about the tickets?</prompt>
+
+			<help>
+				<throw event="help_edificios_eng"/>
+			</help>
+			<noinput>
+				<throw event="help_edificios_eng"/>
+			</noinput>
+		</field>
+		
+		<field name="horario">
+			<grammar src="horario.jsgf"/>
+			<prompt count="1">What time do you want to get information about the tickets?</prompt>
+			<prompt count="3">
+				Please choose a time to visit it.
+				The available hours are: morning, afternoon or night.
+			</prompt>
+			<help>
+				<throw event="help_horarios_eng"/>
+			</help>
+			<noinput>
+				<throw event="help_horarios_eng"/>
+			</noinput>
+		</field>
+
+		<field name="confirmar_ed_hor">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt>
+				You said you want information about
+				<value expr="edificio"/> for the schedule of
+				<value expr="horario"/>.
+				Is the information provided correct?
+			</prompt>
+			<filled>
+				<if cond="confirmar_ed_hor=='si'">
+					Very well manuel. Let's gooooo.
+					<assign name="edificio_global" expr="edificio"/>
+					<assign name="horario_global" expr="horario"/>
+				<else/>
+					In agreement. I will ask again.
+					<clear namelist="edificio horario confirmar_ed_hor"/>
+				</if>
+			</filled>
+		</field>
+
+		<field name="confirmar_asistencia">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt>Do you suffer from any kind of disability?</prompt>
+			<filled>
+				<if cond="confirmar_asistencia=='si'">
+					Let's give some crap asshole help.
+					<goto next="#asistencia"/>
+				<else/>
+					<goto next="#precios"/>
+				</if>
+			</filled>
+		</field>
+	</form>
+
+
+	<form id="asistencia">
+		<field name="movilidad_reducida">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt> Do you need any assistance for reduced mobility, marcelino bread and wine?</prompt>
+			<filled>
+				<if cond="movilidad_reducida=='si'">
+					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
+				</if>
+			</filled>
+		</field>
+
+		<field name="otra_discapacidad">
+			<grammar src="confirmacion.jsgf"/>
+			<prompt> Do you have another type of disability, such as subnormality, blindness or deafness?</prompt>
+			<filled>
+				<if cond="otra_discapacidad=='si'">
+					<assign name="otra_discapacidad_global" expr="otra_discapacidad"/>
+					<goto next="#precios"/>
+				<else/>
+					<goto next="#precios"/>
+				</if>
+			</filled>
+		</field>
+	</form>
+
+
+	<form id="precios">
+		<block>
+			With all the information you have provided me, the entrance will cost you
+			<say-as type="currency">EUR<value expr="calcularPrecioFinal(precio, edificio_global, horario_global, movilidad_reducida_global, otra_discapacidad_global)"/>
+			</say-as>
+			 yatusabe mi amol.
+			<break time="200ms"/>
+		</block>
+		
+
+		<field name="opcion">
+			<grammar src="salir.jsgf"/>
+			<prompt> Do you want to check the price of another type of ticket?
+					Do you want to leave a suggestion? Because we exist, we also have a heart, we care about you :)</prompt>
+			
+			<filled>
+				<if cond="opcion=='consultar otra entrada'">
+					<clear namelist="edificio horario confirmar_ed_hor movilidad_reducida otra_discapacidad"/>
+					<goto next="#informacion_entradas"/>
+				
+				<elseif cond="opcion=='sugerencias'"/>
+					<goto next="#sugerencias"/>
+				
+				<elseif cond="opcion=='salir'"/>
+					<throw event="exit_english"/>
+
+				</if>
+
+			</filled>
+
+			<help>
+				<throw event="help_exit"/>
+			</help>
+
+			<noinput>
+				<throw event="exit_engl"/>
+			</noinput>
+
+			<!-- <choice>
+				Arriba ESPAÑA
+				<audio src="http://webhosting.voxeo.net/206462/www/xd/himno.wav"/>
+			</choice> -->
+
+		</field>
+			
+	</form>
+
+	<form id="sugerencias">
+		<record name="sugerencia" beep="true" maxtime="10s"	finalsilence="4000ms" dtmfterm="true" type="audio/x-wav">
+		<prompt>Record your message after listening to the beeeeeeeeeeeeeeeeeeeeeeeeeep</prompt>
+		<noinput>Ques sto, no entiendo, ques estooooooo</noinput>
+		</record>
+		<throw event="exit_español"/>
+	</form>
+
 </vxml>

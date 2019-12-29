@@ -9,7 +9,7 @@
 </vxml> -->
 
 
-<vxml version="2.1" xml:lang="es-ES">
+<vxml version="2.1" xml:lang="es-ES" application="root.vxml">
 	<link event="help">
 		<grammar src="ayuda.jsgf"/>
 	</link>
@@ -31,7 +31,7 @@
 
 		<field name="edificio">
 			<grammar src="edificio.jsgf"/>
-			<prompt>Para que edificio de la Alhambra desea obtener informacion sobre las entradas?</prompt>
+			<prompt>Iyooo, para que edificio de la Alhambra desea obtener informacion sobre las entradas?</prompt>
 
 			<help>
 				<throw event="help_edificios"/>
@@ -94,7 +94,7 @@
 	<form id="asistencia">
 		<field name="movilidad_reducida">
 			<grammar src="confirmacion.jsgf"/>
-			<prompt> Necesitaria algun tipo de asistencia por movilidad reducida?</prompt>
+			<prompt> Necesitaria algun tipo de asistencia por movilidad reducida, marcelino pan y vino?</prompt>
 			<filled>
 				<if cond="movilidad_reducida=='si'">
 					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
@@ -121,14 +121,15 @@
 		<block>
 			Con toda la informacion que me ha proporcionado, la entrada le costara
 			<value expr="calcularPrecioFinal(precio, edificio_global, horario_global, movilidad_reducida_global, otra_discapacidad_global)"/>
-			euros.
+			euros, yatusabe mi amol.
 			<break time="200ms"/>
 		</block>
 		
 
 		<field name="opcion">
 			<grammar src="salir.jsgf"/>
-			<prompt> Desea consultar el precio de otro tipo de entrada? </prompt>
+			<prompt> Desea consultar el precio de otro tipo de entrada? 
+					Desea dejar una sugerencia? Porque existimos, tambien tenemos corazon, nos importas :)</prompt>
 			
 			<filled>
 				<if cond="opcion=='consultar otra entrada'">
@@ -136,10 +137,7 @@
 					<goto next="#informacion_entradas"/>
 				
 				<elseif cond="opcion=='sugerencias'"/>
-					<record name="sugerencia" beep="true" maxtime="10s"	finalsilence="4000ms" dtmfterm="true" type="audio/wav">
-						<prompt>Graba tu mensaje tras escuchar el beeeeeeeeeeeeeeeeeeeeeeeeeep</prompt>
-						<noinput>No he oido nada, intentalo de nuevo</noinput>
-					</record>
+					<goto next="#sugerencias"/>
 				
 				<elseif cond="opcion=='salir'"/>
 					<throw event="exit_español"/>
@@ -163,6 +161,14 @@
 
 		</field>
 			
+	</form>
+
+	<form id="sugerencias">
+		<record name="sugerencia" beep="true" maxtime="10s"	finalsilence="4000ms" dtmfterm="true" type="audio/x-wav">
+			<prompt>Graba tu mensaje tras escuchar el beeeeeeeeeeeeeeeeeeeeeeeeeep</prompt>
+			<noinput>No he oido nada, intentalo de nuevo</noinput>
+		</record>
+		<throw event="exit_español"/>
 	</form>
 
 </vxml>

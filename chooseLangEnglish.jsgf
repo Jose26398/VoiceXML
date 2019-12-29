@@ -2,4 +2,4 @@
 
 grammar chooseLangEnglish;
 
-public <chooseLangEnglish> = English;
+public <chooseLangEnglish> = English | inglish | anglish;

@@ -1,5 +1,5 @@
 <vxml version="2.1" xml:lang="es-ES">
-<var name="despedida" expr="'adios'"/>
+    <var name="despedida" expr="'adios'"/>
 
     <catch event="ayuda">
         <prompt>xd jaja</prompt>
@@ -13,6 +13,39 @@
     <catch event="help_horarios">
         <prompt>Los horarios disponibles son: mañana, tarde o noche.</prompt>
         <reprompt/>
+    </catch>
+
+    <catch event="exit_español">
+        <prompt>Muchas gracias por haber usado nuestro servicio. Le esperamos de vuelta.</prompt>
+        <exit/>
+    </catch>
+    
+    <catch event="help_salir">
+        <prompt> Si quiere hacer otra consulta diga: consultar otra entrada. 
+                Tambien puede dejar una sugerencia o salir de la aplicacion.
+        </prompt>
+    </catch>
+
+    <catch event="help_edificios_eng">
+        <prompt xml:lang="en-US">The available buildings to buy a ticket for are: Palacio de Carlos Quinto, Alcazaba or Palacios Nazaries.</prompt>
+        <reprompt/>
+    </catch>
+
+    <catch event="help_horarios_eng">
+        <prompt xml:lang="en-US">Our available opening hours are: morning, evening o night.</prompt>
+        <reprompt/>
+    </catch>
+
+    <catch event="exit_english">
+        <prompt xml:lang="en-US">Thanks for using our service. We look forward to seeing you again.</prompt>
+        <exit/>
+    </catch>
+    
+    <catch event="help_exit">
+        <prompt xml:lang="en-US"> If you would like to check the price of another ticket say:
+        check another ticket. You could also leave some feedback or exit the app. 
+        </prompt>
+        
     </catch>
 
 </vxml>
