@@ -1,5 +1,0 @@
-#JSGF V1.0;
-
-grammar chooseLangEnglish;
-
-public <chooseLangEnglish> = English | inglish | anglish;
