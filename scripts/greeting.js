@@ -5,7 +5,7 @@ function greetEng(){
     if (time < 12) {
         return "Good morning";
     }
-    if (time < 17) {
+    if (time < 19) {
         return"Good afternoon.";
     }
     if (time >= 19) {
@@ -20,7 +20,7 @@ function greetEsp(){
     if (time < 12) {
         return "Buenos dias";
     }
-    if (time < 17) {
+    if (time < 19) {
         return"Buenas tardes";
     }
     if (time >= 19) {
