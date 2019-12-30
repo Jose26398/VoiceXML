@@ -13,7 +13,7 @@
 
 	<form id="informacion_entradas">
 		<block>
-			Welcome to the Alhambra ticket information service.
+			<prompt bargein="false"> Welcome to the Alhambra ticket information service. </prompt>
 			<break time="500ms"/>
 		</block>
 
@@ -49,7 +49,7 @@
 				Is the information provided correct?
 			</prompt>
 			<filled>
-				<if cond="confirmar_ed_hor">
+				<if cond="confirmar_ed_hor &amp;&amp; confirmar_ed_hor$.confidence &gt; 0.6">
 					Very well. Let's continue.
 					<assign name="edificio_global" expr="edificio"/>
 					<assign name="horario_global" expr="horario"/>
@@ -63,11 +63,14 @@
 		<field name="confirmar_asistencia" type="boolean">
 			<prompt>Do you have any kind of <emphasis> disability </emphasis>? </prompt>
 			<filled>
-				<if cond="confirmar_asistencia">
+				<if cond="confirmar_asistencia &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6">
 					We will try to offer you better information about ticket prices.
 					<goto next="#asistencia"/>
-				<else/>
+				<elseif cond="confirmar_asistencia==false &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6"/>
 					<goto next="#precios"/>
+				<else/>
+					<prompt> I didn't understand you.</prompt>
+					<clear namelist="confirmar_asistencia"/>
 				</if>
 			</filled>
 		</field>
@@ -76,9 +79,10 @@
 
 	<form id="asistencia">
 		<field name="movilidad_reducida" type="boolean">
-			<prompt> Do you have reduced mobility and need any kind of assistance?</prompt>
+			<prompt> Do you have reduced mobility or need any kind of assistance?</prompt>
 			<filled>
-				<if cond="movilidad_reducida">
+				<if cond="movilidad_reducida &amp;&amp; movilidad_reducida$.confidence &gt; 0.6">
+					<prompt> All right. </prompt>
 					<assign name="movilidad_reducida_global" expr="'si'"/>
 				</if>
 			</filled>
@@ -87,8 +91,9 @@
 		<field name="otra_discapacidad" type="boolean">
 			<prompt> Do you have any other kind of disability, such as blindness or deafness?</prompt>
 			<filled>
-				<if cond="otra_discapacidad">
+				<if cond="otra_discapacidad &amp;&amp; otra_discapacidad$.confidence &gt; 0.6">
 					<assign name="otra_discapacidad_global" expr="'si'"/>
+					<prompt> All right. </prompt>
 					<goto next="#precios"/>
 				<else/>
 					<goto next="#precios"/>
@@ -108,18 +113,21 @@
 
 		<field name="opcion">
 			<grammar src="grammar-english/salir.jsgf"/>
-			<prompt count="1"> Do you want to check the price of another ticket or leave any suggestion? </prompt>
+			<prompt count="1"> Do you want to check the price of another ticket or leave any feedback? </prompt>
 			<prompt count="3"> Please, say help to know the available options. </prompt>
 			<filled>
-				<if cond="opcion=='check another ticket'">
+				<if cond="opcion=='check another ticket' &amp;&amp; opcion$.confidence &gt; 0.5">
 					<clear namelist="edificio horario confirmar_ed_hor movilidad_reducida otra_discapacidad"/>
 					<assign name="movilidad_reducida_global" expr="'no'"/>
 					<assign name="otra_discapacidad_global" expr="'no'"/>
 					<goto next="#informacion_entradas"/>				
-				<elseif cond="opcion=='suggestion'"/>
+				<elseif cond="opcion=='feedback' &amp;&amp; opcion$.confidence &gt; 0.5"/>
 					<goto next="#sugerencias"/>
-				<elseif cond="opcion=='no' || opcion=='exit'"/>
+				<elseif cond="(opcion=='no' || opcion=='exit')&amp;&amp; opcion$.confidence &gt; 0.5"/>
 					<throw event="exit_english"/>
+				<else/>
+					<prompt> I don't understand. Could you repeat it? </prompt>
+					<clear namelist="opcion"/>
 				</if>
 			</filled>
 
@@ -130,6 +138,7 @@
 			<noinput>
 				<throw event="exit_engl"/>
 			</noinput>
+
 		</field>			
 	</form>
 

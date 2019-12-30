@@ -2,12 +2,12 @@
 	<script src="scripts/greeting.js"/>
 
   <menu>
-    <audio src="audio/recuerdos.wav"/>
-		<prompt><value expr="greetEsp()"/> . Bienvenido a la <emphasis> Alhambra </emphasis></prompt>
-		<prompt xml:lang="en-US"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
+    <prompt bargein="false"><audio src="audio/recuerdos.wav"/></prompt>
+		<prompt bargein="false"><value expr="greetEsp()"/> . Bienvenido a la <emphasis> Alhambra </emphasis></prompt>
+		<prompt xml:lang="en-US" bargein="false"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
     
-    <prompt>Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
-    <prompt xml:lang="en-US" timeout="20s">To choose English, press 2 or say <emp level="strong">English</emp></prompt>
+    <prompt bargein="false">Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
+    <prompt xml:lang="en-US" bargein="false">To choose English, press 2 or say <emp level="strong">English</emp></prompt>
       <choice dtmf="1" next="spanish.vxml">
         Español
       </choice>

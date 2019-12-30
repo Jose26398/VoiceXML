@@ -2,4 +2,4 @@
 
 grammar salir;
 
-public <salir> = check another ticket | suggestion | exit | no;
+public <salir> = check another ticket | feedback | exit | no;

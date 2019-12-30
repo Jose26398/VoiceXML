@@ -1,6 +1,4 @@
 <vxml version="2.1" xml:lang="es-ES">
-    <var name="despedida" expr="'adios'"/>
-
     <catch event="help_edificios">
         <prompt>Los edificios disponibles para comprar entradas son: Palacio de Carlos Quinto, la Alcazaba o el Palacios Nazaries.</prompt>
         <reprompt/>
@@ -41,7 +39,6 @@
         <prompt xml:lang="en-US"> If you would like to check the price of another ticket say:
         check another ticket. You could also leave some feedback or exit the app. 
         </prompt>
-        
     </catch>
 
 </vxml>

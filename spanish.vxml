@@ -13,7 +13,7 @@
 
 	<form id="informacion_entradas">
 		<block>
-			Bienvenido al servicio de informacion de entradas de la Alhambra.
+			<prompt bargein="false"> Bienvenido al servicio de informacion de entradas de la Alhambra. </prompt>
 			<break time="500ms"/>
 		</block>
 
@@ -44,13 +44,11 @@
 		<field name="confirmar_ed_hor">
 			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt>
-				Usted ha dicho que quiere informacion sobre
-				<value expr="edificio"/> para el horario de
-				<value expr="horario"/>.
+				Usted ha dicho que quiere informacion sobre	<value expr="edificio"/> para el horario de	<value expr="horario"/>.
 				Es correcta la informacion proporcionada?
 			</prompt>
 			<filled>
-				<if cond="confirmar_ed_hor=='si'">
+				<if cond="confirmar_ed_hor=='si' &amp;&amp; confirmar_ed_hor$.confidence &gt; 0.6">
 					Muy bien. Continuemos.
 					<assign name="edificio_global" expr="edificio"/>
 					<assign name="horario_global" expr="horario"/>
@@ -65,11 +63,14 @@
 			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt> Padece algun tipo de <emphasis> minusvalia </emphasis>? </prompt>
 			<filled>
-				<if cond="confirmar_asistencia=='si'">
+				<if cond="confirmar_asistencia=='si' &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6">
 					Vamos a intentar ofrecerle mejor informacion sobre los precios de las entradas.
 					<goto next="#asistencia"/>
-				<else/>
+				<elseif cond="confirmar_asistencia=='no' &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6"/>
 					<goto next="#precios"/>
+				<else/>
+					<prompt> No le he entendido </prompt>
+					<clear namelist="confirmar_asistencia"/>
 				</if>
 			</filled>
 		</field>
@@ -81,7 +82,8 @@
 			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt> Necesitaria algun tipo de asistencia debido a movilidad reducida? </prompt>
 			<filled>
-				<if cond="movilidad_reducida=='si'">
+				<if cond="movilidad_reducida=='si' &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6">
+					<prompt> De acuerdo. </prompt>
 					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
 				</if>
 			</filled>
@@ -91,7 +93,8 @@
 			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt> Padece otro tipo de discapacidad, como por ejemplo, ceguera o sordera? </prompt>
 			<filled>
-				<if cond="otra_discapacidad=='si'">
+				<if cond="otra_discapacidad=='si' &amp;&amp; otra_discapacidad$.confidence &gt; 0.6">
+					<prompt> De acuerdo. </prompt>
 					<assign name="otra_discapacidad_global" expr="otra_discapacidad"/>
 					<goto next="#precios"/>
 				<else/>
@@ -115,15 +118,18 @@
 			<prompt count="1"> Desea consultar el precio de otra entrada o dejar una sugerencia? </prompt>
 			<prompt count="3"> Por favor, diga ayuda para saber las opciones disponibles. </prompt>
 			<filled>
-				<if cond="opcion=='consultar otra entrada'">
+				<if cond="opcion=='consultar otra entrada' &amp;&amp; opcion$.confidence &gt; 0.5">
 					<clear namelist="edificio horario confirmar_ed_hor movilidad_reducida otra_discapacidad"/>
 					<assign name="movilidad_reducida_global" expr="'no'"/>
 					<assign name="otra_discapacidad_global" expr="'no'"/>
 					<goto next="#informacion_entradas"/>
-				<elseif cond="opcion=='sugerencias'"/>
+				<elseif cond="opcion=='sugerencias' &amp;&amp; opcion$.confidence &gt; 0.5"/>
 					<goto next="#sugerencias"/>
 				<elseif cond="opcion=='no' || opcion=='salir'"/>
 					<throw event="exit_español"/>
+				<else/>
+					<prompt> No le he entendido. Podria repetirlo? </prompt>
+					<clear namelist="opcion"/>
 				</if>
 			</filled>
 			<help>
