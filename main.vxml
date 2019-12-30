@@ -1,19 +1,24 @@
 <vxml version="2.1" xml:lang="es-ES" application="root.vxml">
-	<script src="scripts/greeting.js"/>
+  <script src="scripts/greeting.js"/>
+
+  <catch event="nomatch noinput" count ="3">
+    <exit/>
+  </catch>
 
   <menu>
-    <prompt bargein="false"><audio src="audio/recuerdos.wav"/></prompt>
-		<prompt bargein="false"><value expr="greetEsp()"/> . Bienvenido a la <emphasis> Alhambra </emphasis></prompt>
-		<prompt xml:lang="en-US" bargein="false"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
+    <property name="bargein" value="false"/> 
+    <prompt><audio src="audio/recuerdos.wav"/></prompt>
+    <prompt><value expr="greetEsp()"/> . Bienvenido a la <emphasis> Alhambra </emphasis></prompt>
+    <prompt xml:lang="en-US"><value expr="greetEng()"/> . Welcome to the Alhambra</prompt>
     
-    <prompt bargein="false">Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
-    <prompt xml:lang="en-US" bargein="false">To choose English, press 2 or say <emp level="strong">English</emp></prompt>
+    <prompt>Para elegir español pulse 1 o diga <emp level="strong">español</emp></prompt>
+    <prompt xml:lang="en-US">To choose English, press 2 or say <emp level="strong">English</emp></prompt>
       <choice dtmf="1" next="spanish.vxml">
         Español
       </choice>
       
       <choice dtmf="2" next="english.vxml">
-	      <grammar src="grammar-english/chooseLangEnglish.jsgf"/>
+        <grammar src="grammar-english/chooseLangEnglish.jsgf"/>
           Ingles
       </choice>
   </menu>
