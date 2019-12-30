@@ -82,7 +82,7 @@
 			<grammar src="grammar-spanish/confirmacion.jsgf"/>
 			<prompt> Necesitaria algun tipo de asistencia debido a movilidad reducida? </prompt>
 			<filled>
-				<if cond="movilidad_reducida=='si' &amp;&amp; confirmar_asistencia$.confidence &gt; 0.6">
+				<if cond="movilidad_reducida=='si' &amp;&amp; movilidad_reducida$.confidence &gt; 0.6">
 					<prompt> De acuerdo. </prompt>
 					<assign name="movilidad_reducida_global" expr="movilidad_reducida"/>
 				</if>
